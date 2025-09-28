@@ -1,8 +1,23 @@
-import classNames from 'classnames';
+import cn from 'classnames';
 import { Link, useLocation } from 'react-router-dom';
 
 export const Navbar: React.FC = () => {
   const { pathname } = useLocation();
+
+  const links = [
+    {
+      to: '/',
+      label: 'Home',
+      classNames: cn('navbar-item', { 'is-active': pathname === '/' }),
+    },
+    {
+      to: '/tabs',
+      label: 'Tabs',
+      classNames: cn('navbar-item', {
+        'is-active': pathname.startsWith('/tabs'),
+      }),
+    },
+  ];
 
   return (
     <nav
@@ -11,25 +26,11 @@ export const Navbar: React.FC = () => {
     >
       <div className="container">
         <div className="navbar-brand">
-          <Link
-            to="/"
-            className={classNames(
-              'navbar-item',
-              pathname === '/' ? 'is-active' : '',
-            )}
-          >
-            Home
-          </Link>
-
-          <Link
-            to="/tabs"
-            className={classNames(
-              'navbar-item',
-              pathname.startsWith('/tabs') ? 'is-active' : '',
-            )}
-          >
-            Tabs
-          </Link>
+          {links.map(({ to, label, classNames }) => (
+            <Link key={to} to={to} className={classNames}>
+              {label}
+            </Link>
+          ))}
         </div>
       </div>
     </nav>
